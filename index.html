@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editable Table</title>
+    <style>
+        input {
+            width: 100%;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <!-- React and ReactDOM via CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Babel for compiling JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function EditableTable() {
+            const [data, setData] = useState([
+                ["Onboarding Call", ""],
+                ["Google Search Console Access", ""],
+                ["Google Analytics Access", ""],
+                ["Website Access", ""],
+                ["Technical Audit", ""],
+                ["Anchor Text and Semantic Analysis", ""],
+                ["Competitor Analysis", ""],
+                ["Anchor Text / URL Mapping", ""],
+                ["Google Data Studio Report + Local Reporting Suite", ""],
+                ["Site Level Optimization", ""],
+                ["On Page Optimization", ""],
+                ["Content Creation", ""],
+                ["Content Publishing", ""],
+                ["Premium Press Release", ""],
+                ["Authority Niche Placements", ""],
+                ["Review Management", ""],
+                ["Index Links", ""],
+                ["Video Recap", ""]
+            ]);
+
+            const handleChange = (e, rowIndex, colIndex) => {
+                const updatedData = [...data];
+                updatedData[rowIndex][colIndex] = e.target.value;
+                setData(updatedData);
+            };
+
+            const handleSubmit = () => {
+                // You can replace this with an actual API call
+                console.log('Submitting data:', data);
+                // Example: send data to API using fetch
+                fetch('https://your-api-endpoint.com', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: data }),
+                })
+                .then(response => response.json())
+                .then(data => console.log('Success:', data))
+                .catch(error => console.error('Error:', error));
+            };
+
+            return (
+                <div>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map((row, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    <td>{row[0]}</td>
+                                    <td>
+                                        <input 
+                                            type="text" 
+                                            value={row[1]} 
+                                            onChange={(e) => handleChange(e, rowIndex, 1)} 
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <button onClick={handleSubmit}>Submit</button>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<EditableTable />, document.getElementById('root'));
+    </script>
+
+</body>
+</html>
